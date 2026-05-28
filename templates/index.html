@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Diabetes Prediction</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"/>
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <div class="header">
+      <div class="header-icon">🩺</div>
+      <h1>Diabetes Risk Predictor</h1>
+      <p>Enter your health details below to check your diabetes risk using an AI model trained on the PIMA dataset.</p>
+    </div>
+
+    <div class="card">
+      <form id="predict-form">
+        <div class="grid">
+
+          <div class="field-group">
+            <label for="Pregnancies">Pregnancies</label>
+            <div class="input-wrap">
+              <input type="number" id="Pregnancies" name="Pregnancies" placeholder="e.g. 2" min="0" max="20" step="1" required />
+              <span class="info-btn" tabindex="0">i
+                <div class="tooltip">
+                  <strong>Pregnancies</strong><br/>
+                  Number of times pregnant.<br/>
+                  <span class="range">Normal range: 0 – 17</span>
+                </div>
+              </span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="Glucose">Glucose</label>
+            <div class="input-wrap">
+              <input type="number" id="Glucose" name="Glucose" placeholder="e.g. 120" min="0" max="300" step="1" required />
+              <span class="info-btn" tabindex="0">i
+                <div class="tooltip">
+                  <strong>Glucose</strong><br/>
+                  Plasma glucose concentration (mg/dL) after 2-hour oral glucose tolerance test.<br/>
+                  <span class="range">Normal: 70–99 | Pre-diabetic: 100–125 | Diabetic: 126+</span>
+                </div>
+              </span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="BloodPressure">Blood Pressure</label>
+            <div class="input-wrap">
+              <input type="number" id="BloodPressure" name="BloodPressure" placeholder="e.g. 72" min="0" max="150" step="1" required />
+              <span class="info-btn" tabindex="0">i
+                <div class="tooltip">
+                  <strong>Blood Pressure</strong><br/>
+                  Diastolic blood pressure (mm Hg).<br/>
+                  <span class="range">Normal: 60–80 | High: 80+</span>
+                </div>
+              </span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="SkinThickness">Skin Thickness</label>
+            <div class="input-wrap">
+              <input type="number" id="SkinThickness" name="SkinThickness" placeholder="e.g. 20" min="0" max="100" step="1" required />
+              <span class="info-btn" tabindex="0">i
+                <div class="tooltip">
+                  <strong>Skin Thickness</strong><br/>
+                  Triceps skin fold thickness (mm). Used to estimate body fat.<br/>
+                  <span class="range">Typical range: 0 – 99 mm</span>
+                </div>
+              </span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="Insulin">Insulin</label>
+            <div class="input-wrap">
+              <input type="number" id="Insulin" name="Insulin" placeholder="e.g. 80" min="0" max="900" step="1" required />
+              <span class="info-btn" tabindex="0">i
+                <div class="tooltip">
+                  <strong>Insulin</strong><br/>
+                  2-hour serum insulin (μU/mL).<br/>
+                  <span class="range">Normal fasting: 2–25 | Typical range in dataset: 0–846</span>
+                </div>
+              </span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="BMI">BMI</label>
+            <div class="input-wrap">
+              <input type="number" id="BMI" name="BMI" placeholder="e.g. 28.5" min="0" max="70" step="0.1" required />
+              <span class="info-btn" tabindex="0">i
+                <div class="tooltip">
+                  <strong>BMI</strong><br/>
+                  Body Mass Index (weight in kg / height in m²).<br/>
+                  <span class="range">Underweight: &lt;18.5 | Normal: 18.5–24.9 | Overweight: 25–29.9 | Obese: 30+</span>
+                </div>
+              </span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="DiabetesPedigreeFunction">Diabetes Pedigree</label>
+            <div class="input-wrap">
+              <input type="number" id="DiabetesPedigreeFunction" name="DiabetesPedigreeFunction" placeholder="e.g. 0.47" min="0" max="3" step="0.001" required />
+              <span class="info-btn" tabindex="0">i
+                <div class="tooltip">
+                  <strong>Diabetes Pedigree Function</strong><br/>
+                  A score that reflects the likelihood of diabetes based on family history.<br/>
+                  <span class="range">Typical range: 0.078 – 2.42 | Higher = more family risk</span>
+                </div>
+              </span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="Age">Age</label>
+            <div class="input-wrap">
+              <input type="number" id="Age" name="Age" placeholder="e.g. 33" min="1" max="120" step="1" required />
+              <span class="info-btn" tabindex="0">i
+                <div class="tooltip">
+                  <strong>Age</strong><br/>
+                  Age of the person in years.<br/>
+                  <span class="range">Dataset range: 21 – 81 years</span>
+                </div>
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+        <button type="submit" class="predict-btn" id="submit-btn">
+          <span id="btn-text">Check Diabetes Risk</span>
+          <span id="btn-loader" class="loader hidden"></span>
+        </button>
+      </form>
+
+      <div id="result-box" class="result-box hidden">
+        <div id="result-icon" class="result-icon"></div>
+        <div id="result-title" class="result-title"></div>
+        <div id="result-msg" class="result-msg"></div>
+        <button class="reset-btn" onclick="resetForm()">Check Again</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>⚠️ This tool is for educational purposes only. Always consult a medical professional.</p>
+    </div>
+
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
